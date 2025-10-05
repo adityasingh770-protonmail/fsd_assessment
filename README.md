@@ -82,7 +82,7 @@ Once the backend is set up, API documentation will be available at:
 
 ## 🤝 Contributing
 
-This is an assignment project. Contributions are not expected.
+This is an individual project. Contributions are not expected.
 
 ## 📄 License
 
