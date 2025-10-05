@@ -59,12 +59,7 @@ def init_db():
     This should be called when setting up the database for the first time.
     """
     # Import all models here to ensure they are registered with Base
-    # This will be updated when models are created
-    # from models.movie import Movie
-    # from models.actor import Actor
-    # from models.director import Director
-    # from models.genre import Genre
-    # from models.associations import movie_actors, movie_genres
+    from models import Movie, Actor, Director, Genre, movie_actors, movie_genres
     
     Base.metadata.create_all(bind=engine)
     print("Database tables created successfully!")
