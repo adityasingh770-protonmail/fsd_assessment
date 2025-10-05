@@ -1,0 +1,37 @@
+[MASTER]
+# Use multiple processes to speed up Pylint
+jobs=1
+
+# Pickle collected data for later comparisons
+persistent=yes
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+disable=
+    C0111,  # missing-docstring
+    R0903,  # too-few-public-methods (for Pydantic models)
+    R0913,  # too-many-arguments
+    W0621,  # redefined-outer-name (common in pytest)
+    C0103,  # invalid-name (for db, app, etc.)
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+# String used for indentation
+indent-string='    '
+
+[BASIC]
+# Good variable names
+good-names=i,j,k,ex,Run,_,id,db,app
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=7
+
+# Maximum number of attributes for a class
+max-attributes=10
+
+[SIMILARITIES]
+# Minimum lines number of a similarity
+min-similarity-lines=4
