@@ -143,6 +143,6 @@ if __name__ == '__main__':
     app = create_app()
     app.run(
         host='0.0.0.0',
-        port=5000,
+        port=5001,  # moved port to 5001 as 5000 was being used for another program
         debug=app.config['DEBUG']
     )
