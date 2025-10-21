@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Action",
+    "description": "High-energy films with physical stunts and chases"
+  },
+  {
+    "name": "Comedy",
+    "description": "Films designed to make the audience laugh"
+  },
+  {
+    "name": "Drama",
+    "description": "Serious, plot-driven films exploring complex themes"
+  },
+  {
+    "name": "Sci-Fi",
+    "description": "Science fiction films exploring futuristic concepts"
+  },
+  {
+    "name": "Thriller",
+    "description": "Suspenseful films that keep viewers on edge"
+  },
+  {
+    "name": "Horror",
+    "description": "Films designed to frighten and invoke fear"
+  },
+  {
+    "name": "Romance",
+    "description": "Films focused on love stories and relationships"
+  },
+  {
+    "name": "Adventure",
+    "description": "Films featuring exciting journeys and quests"
+  },
+  {
+    "name": "Crime",
+    "description": "Films centered around criminal activities"
+  },
+  {
+    "name": "Fantasy",
+    "description": "Films with magical and supernatural elements"
+  },
+  {
+    "name": "Mystery",
+    "description": "Films involving solving puzzles or crimes"
+  },
+  {
+    "name": "Animation",
+    "description": "Animated films using various techniques"
+  }
+]

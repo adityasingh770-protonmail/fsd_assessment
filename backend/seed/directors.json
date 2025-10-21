@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Christopher Nolan",
+    "bio": "British-American filmmaker known for complex narratives and visual style",
+    "birth_date": "1970-07-30",
+    "nationality": "British-American"
+  },
+  {
+    "name": "Quentin Tarantino",
+    "bio": "American director known for stylized violence and witty dialogue",
+    "birth_date": "1963-03-27",
+    "nationality": "American"
+  },
+  {
+    "name": "Steven Spielberg",
+    "bio": "American filmmaker and one of the founding pioneers of New Hollywood",
+    "birth_date": "1946-12-18",
+    "nationality": "American"
+  },
+  {
+    "name": "Martin Scorsese",
+    "bio": "American director known for crime dramas and historical epics",
+    "birth_date": "1942-11-17",
+    "nationality": "American"
+  },
+  {
+    "name": "Denis Villeneuve",
+    "bio": "Canadian filmmaker known for complex sci-fi and thriller films",
+    "birth_date": "1967-10-03",
+    "nationality": "Canadian"
+  },
+  {
+    "name": "Greta Gerwig",
+    "bio": "American actress and filmmaker",
+    "birth_date": "1983-08-04",
+    "nationality": "American"
+  },
+  {
+    "name": "James Cameron",
+    "bio": "Canadian filmmaker known for science fiction and epic films",
+    "birth_date": "1954-08-16",
+    "nationality": "Canadian"
+  },
+  {
+    "name": "Ridley Scott",
+    "bio": "British filmmaker known for atmospheric and visually intense films",
+    "birth_date": "1937-11-30",
+    "nationality": "British"
+  }
+]

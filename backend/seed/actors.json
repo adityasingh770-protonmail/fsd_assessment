@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Leonardo DiCaprio",
+    "bio": "American actor and film producer known for diverse roles",
+    "birth_date": "1974-11-11",
+    "nationality": "American"
+  },
+  {
+    "name": "Tom Hardy",
+    "bio": "English actor known for intense character portrayals",
+    "birth_date": "1977-09-15",
+    "nationality": "British"
+  },
+  {
+    "name": "Margot Robbie",
+    "bio": "Australian actress and producer",
+    "birth_date": "1990-07-02",
+    "nationality": "Australian"
+  },
+  {
+    "name": "Christian Bale",
+    "bio": "English actor known for dramatic transformations",
+    "birth_date": "1974-01-30",
+    "nationality": "British"
+  },
+  {
+    "name": "Samuel L. Jackson",
+    "bio": "American actor and producer with prolific career",
+    "birth_date": "1948-12-21",
+    "nationality": "American"
+  },
+  {
+    "name": "Uma Thurman",
+    "bio": "American actress and model",
+    "birth_date": "1970-04-29",
+    "nationality": "American"
+  },
+  {
+    "name": "Ryan Gosling",
+    "bio": "Canadian actor and musician",
+    "birth_date": "1980-11-12",
+    "nationality": "Canadian"
+  },
+  {
+    "name": "Timothée Chalamet",
+    "bio": "American-French actor",
+    "birth_date": "1995-12-27",
+    "nationality": "American"
+  },
+  {
+    "name": "Zendaya",
+    "bio": "American actress and singer",
+    "birth_date": "1996-09-01",
+    "nationality": "American"
+  },
+  {
+    "name": "Tom Hanks",
+    "bio": "American actor and filmmaker",
+    "birth_date": "1956-07-09",
+    "nationality": "American"
+  },
+  {
+    "name": "Meryl Streep",
+    "bio": "American actress regarded as one of the greatest of all time",
+    "birth_date": "1949-06-22",
+    "nationality": "American"
+  },
+  {
+    "name": "Cillian Murphy",
+    "bio": "Irish actor known for intense performances",
+    "birth_date": "1976-05-25",
+    "nationality": "Irish"
+  }
+]

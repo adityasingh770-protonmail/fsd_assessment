@@ -1,0 +1,145 @@
+[
+  {
+    "title": "Inception",
+    "description": "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
+    "release_year": 2010,
+    "duration_minutes": 148,
+    "rating": 8.8,
+    "poster_url": "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+    "director": "Christopher Nolan",
+    "actors": ["Leonardo DiCaprio", "Tom Hardy"],
+    "genres": ["Sci-Fi", "Thriller", "Action"]
+  },
+  {
+    "title": "The Dark Knight",
+    "description": "Batman faces the Joker, a criminal mastermind who wants to plunge Gotham City into anarchy.",
+    "release_year": 2008,
+    "duration_minutes": 152,
+    "rating": 9.0,
+    "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "director": "Christopher Nolan",
+    "actors": ["Christian Bale"],
+    "genres": ["Action", "Crime", "Drama"]
+  },
+  {
+    "title": "Interstellar",
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    "release_year": 2014,
+    "duration_minutes": 169,
+    "rating": 8.6,
+    "poster_url": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+    "director": "Christopher Nolan",
+    "actors": [],
+    "genres": ["Sci-Fi", "Drama", "Adventure"]
+  },
+  {
+    "title": "Pulp Fiction",
+    "description": "The lives of two mob hitmen, a boxer, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+    "release_year": 1994,
+    "duration_minutes": 154,
+    "rating": 8.9,
+    "poster_url": "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
+    "director": "Quentin Tarantino",
+    "actors": ["Samuel L. Jackson", "Uma Thurman"],
+    "genres": ["Crime", "Drama", "Thriller"]
+  },
+  {
+    "title": "Barbie",
+    "description": "Barbie and Ken are having the time of their lives in Barbie Land, but they must journey to the real world.",
+    "release_year": 2023,
+    "duration_minutes": 114,
+    "rating": 7.1,
+    "poster_url": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+    "director": "Greta Gerwig",
+    "actors": ["Margot Robbie", "Ryan Gosling"],
+    "genres": ["Comedy", "Adventure", "Fantasy"]
+  },
+  {
+    "title": "Oppenheimer",
+    "description": "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
+    "release_year": 2023,
+    "duration_minutes": 180,
+    "rating": 8.3,
+    "poster_url": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+    "director": "Christopher Nolan",
+    "actors": ["Cillian Murphy"],
+    "genres": ["Drama", "Thriller"]
+  },
+  {
+    "title": "Dune",
+    "description": "Paul Atreides arrives on Arrakis and must protect his family and people while fulfilling his destiny.",
+    "release_year": 2021,
+    "duration_minutes": 155,
+    "rating": 8.0,
+    "poster_url": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+    "director": "Denis Villeneuve",
+    "actors": ["Timothée Chalamet", "Zendaya"],
+    "genres": ["Sci-Fi", "Adventure", "Drama"]
+  },
+  {
+    "title": "Titanic",
+    "description": "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
+    "release_year": 1997,
+    "duration_minutes": 194,
+    "rating": 7.9,
+    "poster_url": "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
+    "director": "James Cameron",
+    "actors": ["Leonardo DiCaprio"],
+    "genres": ["Romance", "Drama"]
+  },
+  {
+    "title": "Avatar",
+    "description": "A paraplegic Marine dispatched to the moon Pandora becomes torn between following his orders and protecting the world he feels is his home.",
+    "release_year": 2009,
+    "duration_minutes": 162,
+    "rating": 7.9,
+    "poster_url": "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqoKgk3r6.jpg",
+    "director": "James Cameron",
+    "actors": [],
+    "genres": ["Sci-Fi", "Action", "Adventure"]
+  },
+  {
+    "title": "The Shawshank Redemption",
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "release_year": 1994,
+    "duration_minutes": 142,
+    "rating": 9.3,
+    "poster_url": "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
+    "director": "Steven Spielberg",
+    "actors": [],
+    "genres": ["Drama"]
+  },
+  {
+    "title": "Blade Runner 2049",
+    "description": "A young blade runner's discovery of a long-buried secret leads him to track down former blade runner Rick Deckard.",
+    "release_year": 2017,
+    "duration_minutes": 164,
+    "rating": 8.0,
+    "poster_url": "https://image.tmdb.org/t/p/w500/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
+    "director": "Denis Villeneuve",
+    "actors": ["Ryan Gosling"],
+    "genres": ["Sci-Fi", "Thriller", "Mystery"]
+  },
+  {
+    "title": "The Godfather",
+    "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+    "release_year": 1972,
+    "duration_minutes": 175,
+    "rating": 9.2,
+    "poster_url": "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+    "director": "Martin Scorsese",
+    "actors": [],
+    "genres": ["Crime", "Drama"]
+  },
+  {
+    "title": "Gladiator",
+    "description": "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family.",
+    "release_year": 2000,
+    "duration_minutes": 155,
+    "rating": 8.5,
+    "poster_url": "https://image.tmdb.org/t/p/w500/ty8TGRuvJLPUmAR1H1nRIsgwvim.jpg",
+    "director": "Ridley Scott",
+    "actors": [],
+    "genres": ["Action", "Drama", "Adventure"]
+  }
+]
