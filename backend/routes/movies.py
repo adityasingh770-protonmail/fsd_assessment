@@ -114,7 +114,21 @@ def get_movies():
         movies = query.distinct().offset((page - 1) * page_size).limit(page_size).all()
         
         # Convert to summary format for list view
-        movie_list = [MovieSummary.model_validate(movie).model_dump() for movie in movies]
+        movie_list = []
+        for movie in movies:
+            movie_dict = {
+                'id': movie.id,
+                'title': movie.title,
+                'release_year': movie.release_year,
+                'rating': movie.rating,
+                'poster_url': movie.poster_url,
+                'director': {
+                    'id': movie.director.id,
+                    'name': movie.director.name
+                } if movie.director else None,
+                'genres': [genre.name for genre in movie.genres]
+            }
+            movie_list.append(movie_dict)
         
         return paginated_response(
             data=movie_list,
@@ -152,7 +166,27 @@ def get_movie(movie_id):
         if not movie:
             return not_found_response(f"Movie with ID {movie_id} not found")
         
-        movie_data = MovieResponse.model_validate(movie).model_dump()
+        movie_data = {
+            'id': movie.id,
+            'title': movie.title,
+            'description': movie.description,
+            'release_year': movie.release_year,
+            'duration_minutes': movie.duration_minutes,
+            'rating': movie.rating,
+            'poster_url': movie.poster_url,
+            'director': {
+                'id': movie.director.id,
+                'name': movie.director.name
+            } if movie.director else None,
+            'actors': [
+                {'id': actor.id, 'name': actor.name}
+                for actor in movie.actors
+            ],
+            'genres': [
+                {'id': genre.id, 'name': genre.name}
+                for genre in movie.genres
+            ]
+        }
         
         return success_response(data=movie_data)
     
@@ -213,7 +247,27 @@ def create_movie():
         db.commit()
         db.refresh(movie)
         
-        movie_response = MovieResponse.model_validate(movie).model_dump()
+        movie_response = {
+            'id': movie.id,
+            'title': movie.title,
+            'description': movie.description,
+            'release_year': movie.release_year,
+            'duration_minutes': movie.duration_minutes,
+            'rating': movie.rating,
+            'poster_url': movie.poster_url,
+            'director': {
+                'id': movie.director.id,
+                'name': movie.director.name
+            } if movie.director else None,
+            'actors': [
+                {'id': actor.id, 'name': actor.name}
+                for actor in movie.actors
+            ],
+            'genres': [
+                {'id': genre.id, 'name': genre.name}
+                for genre in movie.genres
+            ]
+        }
         
         return created_response(
             data=movie_response,
@@ -289,7 +343,27 @@ def update_movie(movie_id):
         db.commit()
         db.refresh(movie)
         
-        movie_response = MovieResponse.model_validate(movie).model_dump()
+        movie_response = {
+            'id': movie.id,
+            'title': movie.title,
+            'description': movie.description,
+            'release_year': movie.release_year,
+            'duration_minutes': movie.duration_minutes,
+            'rating': movie.rating,
+            'poster_url': movie.poster_url,
+            'director': {
+                'id': movie.director.id,
+                'name': movie.director.name
+            } if movie.director else None,
+            'actors': [
+                {'id': actor.id, 'name': actor.name}
+                for actor in movie.actors
+            ],
+            'genres': [
+                {'id': genre.id, 'name': genre.name}
+                for genre in movie.genres
+            ]
+        }
         
         return success_response(
             data=movie_response,

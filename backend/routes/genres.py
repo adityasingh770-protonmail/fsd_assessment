@@ -34,10 +34,25 @@ def get_genres():
         
         genres = db.query(Genre).all()
         
-        if include_movies:
-            genre_list = [GenreWithMovies.model_validate(genre).model_dump() for genre in genres]
-        else:
-            genre_list = [GenreResponse.model_validate(genre).model_dump() for genre in genres]
+        genre_list = []
+        for genre in genres:
+            genre_dict = {
+                'id': genre.id,
+                'name': genre.name,
+                'description': genre.description
+            }
+            
+            if include_movies:
+                genre_dict['movies'] = [
+                    {
+                        'id': movie.id,
+                        'title': movie.title,
+                        'release_year': movie.release_year
+                    }
+                    for movie in genre.movies
+                ]
+            
+            genre_list.append(genre_dict)
         
         return success_response(
             data=genre_list,
@@ -75,10 +90,21 @@ def get_genre(genre_id):
         if not genre:
             return not_found_response(f"Genre with ID {genre_id} not found")
         
+        genre_data = {
+            'id': genre.id,
+            'name': genre.name,
+            'description': genre.description
+        }
+        
         if include_movies:
-            genre_data = GenreWithMovies.model_validate(genre).model_dump()
-        else:
-            genre_data = GenreResponse.model_validate(genre).model_dump()
+            genre_data['movies'] = [
+                {
+                    'id': movie.id,
+                    'title': movie.title,
+                    'release_year': movie.release_year
+                }
+                for movie in genre.movies
+            ]
         
         return success_response(data=genre_data)
     
@@ -119,7 +145,11 @@ def create_genre():
         db.commit()
         db.refresh(genre)
         
-        genre_data = GenreResponse.model_validate(genre).model_dump()
+        genre_data = {
+            'id': genre.id,
+            'name': genre.name,
+            'description': genre.description
+        }
         
         return created_response(
             data=genre_data,
@@ -178,7 +208,11 @@ def update_genre(genre_id):
         db.commit()
         db.refresh(genre)
         
-        genre_data = GenreResponse.model_validate(genre).model_dump()
+        genre_data = {
+            'id': genre.id,
+            'name': genre.name,
+            'description': genre.description
+        }
         
         return success_response(
             data=genre_data,

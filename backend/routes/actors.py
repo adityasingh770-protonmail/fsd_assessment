@@ -54,10 +54,34 @@ def get_actors():
         
         actors = query.offset((page - 1) * page_size).limit(page_size).all()
         
-        if include_movies:
-            actor_list = [ActorWithMovies.model_validate(actor).model_dump() for actor in actors]
-        else:
-            actor_list = [ActorResponse.model_validate(actor).model_dump() for actor in actors]
+        actor_list = []
+        for actor in actors:
+            actor_dict = {
+                'id': actor.id,
+                'name': actor.name,
+                'bio': actor.bio,
+                'birth_date': actor.birth_date.isoformat() if actor.birth_date else None,
+                'nationality': actor.nationality
+            }
+            
+            if include_movies:
+                actor_dict['movies'] = [
+                    {
+                        'id': movie.id,
+                        'title': movie.title,
+                        'release_year': movie.release_year,
+                        'rating': movie.rating
+                    }
+                    for movie in actor.movies
+                ]
+                actor_dict['movie_count'] = actor.movies.count()
+                genres = set()
+                for movie in actor.movies:
+                    for genre in movie.genres:
+                        genres.add(genre.name)
+                actor_dict['genres'] = sorted(list(genres))
+            
+            actor_list.append(actor_dict)
         
         return paginated_response(
             data=actor_list,
@@ -100,10 +124,30 @@ def get_actor(actor_id):
         if not actor:
             return not_found_response(f"Actor with ID {actor_id} not found")
         
+        actor_data = {
+            'id': actor.id,
+            'name': actor.name,
+            'bio': actor.bio,
+            'birth_date': actor.birth_date.isoformat() if actor.birth_date else None,
+            'nationality': actor.nationality
+        }
+        
         if include_movies:
-            actor_data = ActorWithMovies.model_validate(actor).model_dump()
-        else:
-            actor_data = ActorResponse.model_validate(actor).model_dump()
+            actor_data['movies'] = [
+                {
+                    'id': movie.id,
+                    'title': movie.title,
+                    'release_year': movie.release_year,
+                    'rating': movie.rating
+                }
+                for movie in actor.movies
+            ]
+            actor_data['movie_count'] = actor.movies.count()
+            genres = set()
+            for movie in actor.movies:
+                for genre in movie.genres:
+                    genres.add(genre.name)
+            actor_data['genres'] = sorted(list(genres))
         
         return success_response(data=actor_data)
     
@@ -137,7 +181,13 @@ def create_actor():
         db.commit()
         db.refresh(actor)
         
-        actor_data = ActorResponse.model_validate(actor).model_dump()
+        actor_data = {
+            'id': actor.id,
+            'name': actor.name,
+            'bio': actor.bio,
+            'birth_date': actor.birth_date.isoformat() if actor.birth_date else None,
+            'nationality': actor.nationality
+        }
         
         return created_response(
             data=actor_data,
@@ -189,7 +239,13 @@ def update_actor(actor_id):
         db.commit()
         db.refresh(actor)
         
-        actor_data = ActorResponse.model_validate(actor).model_dump()
+        actor_data = {
+            'id': actor.id,
+            'name': actor.name,
+            'bio': actor.bio,
+            'birth_date': actor.birth_date.isoformat() if actor.birth_date else None,
+            'nationality': actor.nationality
+        }
         
         return success_response(
             data=actor_data,

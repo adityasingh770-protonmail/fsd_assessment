@@ -54,10 +54,29 @@ def get_directors():
         
         directors = query.offset((page - 1) * page_size).limit(page_size).all()
         
-        if include_movies:
-            director_list = [DirectorWithMovies.model_validate(director).model_dump() for director in directors]
-        else:
-            director_list = [DirectorResponse.model_validate(director).model_dump() for director in directors]
+        director_list = []
+        for director in directors:
+            director_dict = {
+                'id': director.id,
+                'name': director.name,
+                'bio': director.bio,
+                'birth_date': director.birth_date.isoformat() if director.birth_date else None,
+                'nationality': director.nationality
+            }
+            
+            if include_movies:
+                director_dict['movies'] = [
+                    {
+                        'id': movie.id,
+                        'title': movie.title,
+                        'release_year': movie.release_year,
+                        'rating': movie.rating
+                    }
+                    for movie in director.movies
+                ]
+                director_dict['movie_count'] = director.movies.count()
+            
+            director_list.append(director_dict)
         
         return paginated_response(
             data=director_list,
@@ -100,10 +119,25 @@ def get_director(director_id):
         if not director:
             return not_found_response(f"Director with ID {director_id} not found")
         
+        director_data = {
+            'id': director.id,
+            'name': director.name,
+            'bio': director.bio,
+            'birth_date': director.birth_date.isoformat() if director.birth_date else None,
+            'nationality': director.nationality
+        }
+        
         if include_movies:
-            director_data = DirectorWithMovies.model_validate(director).model_dump()
-        else:
-            director_data = DirectorResponse.model_validate(director).model_dump()
+            director_data['movies'] = [
+                {
+                    'id': movie.id,
+                    'title': movie.title,
+                    'release_year': movie.release_year,
+                    'rating': movie.rating
+                }
+                for movie in director.movies
+            ]
+            director_data['movie_count'] = director.movies.count()
         
         return success_response(data=director_data)
     
@@ -137,7 +171,13 @@ def create_director():
         db.commit()
         db.refresh(director)
         
-        director_data = DirectorResponse.model_validate(director).model_dump()
+        director_data = {
+            'id': director.id,
+            'name': director.name,
+            'bio': director.bio,
+            'birth_date': director.birth_date.isoformat() if director.birth_date else None,
+            'nationality': director.nationality
+        }
         
         return created_response(
             data=director_data,
@@ -189,7 +229,13 @@ def update_director(director_id):
         db.commit()
         db.refresh(director)
         
-        director_data = DirectorResponse.model_validate(director).model_dump()
+        director_data = {
+            'id': director.id,
+            'name': director.name,
+            'bio': director.bio,
+            'birth_date': director.birth_date.isoformat() if director.birth_date else None,
+            'nationality': director.nationality
+        }
         
         return success_response(
             data=director_data,
