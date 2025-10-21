@@ -9,15 +9,7 @@ from config import get_config
 
 
 def create_app(config_name=None):
-    """
-    Application factory pattern for creating Flask app.
-    
-    Args:
-        config_name (str, optional): Configuration name to use
-        
-    Returns:
-        Flask: Configured Flask application instance
-    """
+    """Application factory pattern for creating Flask app."""
     app = Flask(__name__)
     
     # Load configuration
@@ -32,7 +24,7 @@ def create_app(config_name=None):
     # Register error handlers
     register_error_handlers(app)
     
-    # Register blueprints (will be added in later chunks)
+    # Register blueprints
     register_blueprints(app)
     
     # Setup Swagger UI
@@ -63,31 +55,19 @@ def create_app(config_name=None):
 
 
 def register_blueprints(app):
-    """
-    Register Flask blueprints for API routes.
+    """Register Flask blueprints for API routes."""
+    from routes import movies_bp, actors_bp, directors_bp, genres_bp
     
-    Args:
-        app (Flask): Flask application instance
-    """
-    # from routes.movies import movies_bp
-    # from routes.actors import actors_bp
-    # from routes.directors import directors_bp
-    # from routes.genres import genres_bp
+    api_prefix = app.config['API_PREFIX']
     
-    # app.register_blueprint(movies_bp, url_prefix=f"{app.config['API_PREFIX']}/movies")
-    # app.register_blueprint(actors_bp, url_prefix=f"{app.config['API_PREFIX']}/actors")
-    # app.register_blueprint(directors_bp, url_prefix=f"{app.config['API_PREFIX']}/directors")
-    # app.register_blueprint(genres_bp, url_prefix=f"{app.config['API_PREFIX']}/genres")
-    pass
+    app.register_blueprint(movies_bp, url_prefix=f"{api_prefix}/movies")
+    app.register_blueprint(actors_bp, url_prefix=f"{api_prefix}/actors")
+    app.register_blueprint(directors_bp, url_prefix=f"{api_prefix}/directors")
+    app.register_blueprint(genres_bp, url_prefix=f"{api_prefix}/genres")
 
 
 def register_error_handlers(app):
-    """
-    Register custom error handlers for the application.
-    
-    Args:
-        app (Flask): Flask application instance
-    """
+    """Register custom error handlers for the application."""
     
     @app.errorhandler(404)
     def not_found(error):
@@ -118,12 +98,7 @@ def register_error_handlers(app):
 
 
 def setup_swagger(app):
-    """
-    Configure Swagger UI for API documentation.
-    
-    Args:
-        app (Flask): Flask application instance
-    """
+    """Configure Swagger UI for API documentation."""
     SWAGGER_URL = '/api/docs'
     API_URL = '/static/swagger.yaml'
     
