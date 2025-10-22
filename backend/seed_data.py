@@ -35,135 +35,163 @@ def clear_data(db):
 def seed_genres(db):
     """Seed genre data from JSON file."""
     print("\nSeeding genres...")
-    
+
+    # Check if genres already exist
+    existing_count = db.query(Genre).count()
+    if existing_count > 0:
+        print(f"⚠ Genres already exist ({existing_count} found), skipping genre seeding")
+        existing_genres = db.query(Genre).all()
+        return {genre.name: genre for genre in existing_genres}
+
     genres_data = load_genres()
-    
+
     if not genres_data:
         print("⚠ No genre data found")
         return {}
-    
+
     genres = []
     for genre_data in genres_data:
         genre = Genre(**genre_data)
         db.add(genre)
         genres.append(genre)
-    
+
     db.commit()
     print(f"✓ Created {len(genres)} genres")
-    
+
     return {genre.name: genre for genre in genres}
 
 
 def seed_directors(db):
     """Seed director data from JSON file."""
     print("\nSeeding directors...")
-    
+
+    # Check if directors already exist
+    existing_count = db.query(Director).count()
+    if existing_count > 0:
+        print(f"⚠ Directors already exist ({existing_count} found), skipping director seeding")
+        existing_directors = db.query(Director).all()
+        return {director.name: director for director in existing_directors}
+
     directors_data = load_directors()
-    
+
     if not directors_data:
         print("⚠ No director data found")
         return {}
-    
+
     directors = []
     for director_data in directors_data:
         # Convert birth_date string to date object
         if 'birth_date' in director_data and director_data['birth_date']:
             director_data['birth_date'] = datetime.strptime(
-                director_data['birth_date'], 
+                director_data['birth_date'],
                 '%Y-%m-%d'
             ).date()
-        
+
         director = Director(**director_data)
         db.add(director)
         directors.append(director)
-    
+
     db.commit()
     print(f"✓ Created {len(directors)} directors")
-    
+
     return {director.name: director for director in directors}
 
 
 def seed_actors(db):
     """Seed actor data from JSON file."""
     print("\nSeeding actors...")
-    
+
+    # Check if actors already exist
+    existing_count = db.query(Actor).count()
+    if existing_count > 0:
+        print(f"⚠ Actors already exist ({existing_count} found), skipping actor seeding")
+        existing_actors = db.query(Actor).all()
+        return {actor.name: actor for actor in existing_actors}
+
     actors_data = load_actors()
-    
+
     if not actors_data:
         print("⚠ No actor data found")
         return {}
-    
+
     actors = []
     for actor_data in actors_data:
         # Convert birth_date string to date object
         if 'birth_date' in actor_data and actor_data['birth_date']:
             actor_data['birth_date'] = datetime.strptime(
-                actor_data['birth_date'], 
+                actor_data['birth_date'],
                 '%Y-%m-%d'
             ).date()
-        
+
         actor = Actor(**actor_data)
         db.add(actor)
         actors.append(actor)
-    
+
     db.commit()
     print(f"✓ Created {len(actors)} actors")
-    
+
     return {actor.name: actor for actor in actors}
 
 
 def seed_movies(db, directors, actors, genres):
     """Seed movie data from JSON file with relationships."""
     print("\nSeeding movies...")
-    
+
+    # Check if movies already exist
+    existing_count = db.query(Movie).count()
+    if existing_count > 0:
+        print(f"⚠ Movies already exist ({existing_count} found), skipping movie seeding")
+        existing_movies = db.query(Movie).all()
+        return existing_movies
+
     movies_data = load_movies()
-    
+
     if not movies_data:
         print("⚠ No movie data found")
         return []
-    
+
     movies = []
     skipped = 0
-    
+
     for movie_data in movies_data:
         # Extract relationships
         director_name = movie_data.pop("director", None)
         actor_names = movie_data.pop("actors", [])
         genre_names = movie_data.pop("genres", [])
-        
+
         # Create movie
         movie = Movie(**movie_data)
-        
+
         # Set director
         if director_name and director_name in directors:
             movie.director = directors[director_name]
         elif director_name:
             print(f"⚠ Warning: Director '{director_name}' not found for movie '{movie.title}'")
-        
+
         # Add actors
         for actor_name in actor_names:
             if actor_name in actors:
                 movie.actors.append(actors[actor_name])
             else:
                 print(f"⚠ Warning: Actor '{actor_name}' not found for movie '{movie.title}'")
-        
+
         # Add genres
         for genre_name in genre_names:
             if genre_name in genres:
                 movie.genres.append(genres[genre_name])
             else:
                 print(f"⚠ Warning: Genre '{genre_name}' not found for movie '{movie.title}'")
-        
+
         db.add(movie)
         movies.append(movie)
-    
+
     db.commit()
-    
+
     if skipped > 0:
         print(f"✓ Created {len(movies)} movies ({skipped} skipped due to missing data)")
     else:
         print(f"✓ Created {len(movies)} movies")
-    
+
     return movies
 
 
