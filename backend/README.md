@@ -44,11 +44,11 @@ cp .env.example .env
 python app.py
 ```
 
-The API will be available at `http://localhost:5000`
+The API will be available at `http://localhost:5001`
 
 ## API Documentation
 
-Once running, visit `http://localhost:5000/api/docs` for Swagger documentation.
+Once running, visit `http://localhost:5001/api/docs` for Swagger documentation.
 
 ## Testing
 

@@ -78,7 +78,7 @@ Test instructions will be added as the project develops.
 ## 📚 API Documentation
 
 Once the backend is set up, API documentation will be available at:
-- Swagger UI: `http://localhost:5000/api/docs`
+- Swagger UI: `http://localhost:5001/api/docs`
 
 ## 🤝 Contributing
 
