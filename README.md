@@ -45,16 +45,56 @@ Before you begin, ensure you have the following installed:
 
 ## 🚀 Getting Started
 
-Detailed setup instructions can be found in separate setup_instructions.md
-
 ### With Docker (Recommended)
+
+#### Initial Setup
 ```bash
 # Clone the repository
 git clone <repository-url>
 cd movie-explorer-platform
 
-# Build and run with Docker Compose
+# Run the initialization script (builds images, starts services, and seeds database)
+./init_docker.sh
+```
+
+The initialization script will:
+1. Check for Docker and Docker Compose installation
+2. Create a `.env` file from `.env.docker.example` (if it doesn't exist)
+3. Build Docker images for frontend and backend
+4. Start all services (database, backend, frontend)
+5. Initialize the database schema
+6. Seed the database with sample data (if not already present)
+
+#### Accessing the Application
+Once setup is complete, you can access:
+- **Frontend UI:** http://localhost:3000
+- **Backend API:** http://localhost:5001
+- **API Documentation:** http://localhost:5001/api/docs
+- **Health Check:** http://localhost:5001/health
+
+#### Useful Docker Commands
+```bash
+# View logs
+docker-compose logs -f
+
+# View running services
+docker-compose ps
+
+# Stop services
+docker-compose down
+
+# Stop services and remove volumes (fresh start)
+docker-compose down -v
+
+# Restart a specific service
+docker-compose restart backend
+docker-compose restart frontend
+
+# Rebuild and restart services
 docker-compose up --build
+
+# Reseed database (clear existing data)
+docker-compose exec backend python seed_data.py --clear
 ```
 
 ### Without Docker
