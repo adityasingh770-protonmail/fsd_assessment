@@ -14,7 +14,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import InfoIcon from '@mui/icons-material/Info';
 import { useNavigate } from 'react-router-dom';
 import { Movie } from '@/types';
-import { formatDuration, formatGenres, truncateText } from '@/utils';
+import { formatDuration, truncateText } from '@/utils';
 
 interface MovieCardProps {
   movie: Movie;

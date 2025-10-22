@@ -11,6 +11,7 @@ import {
   Grid,
   Slider,
   Typography,
+  SelectChangeEvent,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -60,15 +61,15 @@ export const MovieFilters = ({ filters, onFiltersChange }: MovieFiltersProps) =>
     onFiltersChange({ ...filters, search: searchTerm, page: 1 });
   };
 
-  const handleGenreChange = (e: any) => {
+  const handleGenreChange = (e: SelectChangeEvent<string>) => {
     onFiltersChange({ ...filters, genre: e.target.value, page: 1 });
   };
 
-  const handleDirectorChange = (e: any) => {
+  const handleDirectorChange = (e: SelectChangeEvent<string>) => {
     onFiltersChange({ ...filters, director: e.target.value, page: 1 });
   };
 
-  const handleActorChange = (e: any) => {
+  const handleActorChange = (e: SelectChangeEvent<string>) => {
     onFiltersChange({ ...filters, actor: e.target.value, page: 1 });
   };
 
@@ -77,7 +78,7 @@ export const MovieFilters = ({ filters, onFiltersChange }: MovieFiltersProps) =>
     onFiltersChange({ ...filters, year, page: 1 });
   };
 
-  const handleRatingChange = (event: Event, newValue: number | number[]) => {
+  const handleRatingChange = (_event: Event, newValue: number | number[]) => {
     setRatingRange(newValue as number[]);
   };
 

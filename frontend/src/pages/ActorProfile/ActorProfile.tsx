@@ -39,8 +39,8 @@ export const ActorProfile = () => {
       try {
         const data = await actorService.getActorById(parseInt(id));
         setActor(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load actor profile');
+      } catch (err) {
+        setError((err as Error).message || 'Failed to load actor profile');
       } finally {
         setLoading(false);
       }

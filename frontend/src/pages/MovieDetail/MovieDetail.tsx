@@ -46,8 +46,8 @@ export const MovieDetail = () => {
       try {
         const data = await movieService.getMovieById(parseInt(id));
         setMovie(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load movie details');
+      } catch (err) {
+        setError((err as Error).message || 'Failed to load movie details');
       } finally {
         setLoading(false);
       }

@@ -26,7 +26,7 @@ export const MoviesList = () => {
     page_size: DEFAULT_PAGE_SIZE,
   });
 
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   // Fetch movies whenever filters change
   useEffect(() => {
@@ -38,8 +38,8 @@ export const MoviesList = () => {
         const response = await movieService.getMovies(filters);
         setMovies(response.items);
         setTotalPages(response.meta.total_pages);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load movies');
+      } catch (err) {
+        setError((err as Error).message || 'Failed to load movies');
       } finally {
         setLoading(false);
       }
@@ -52,7 +52,7 @@ export const MoviesList = () => {
     setFilters(newFilters);
   };
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
     setFilters({ ...filters, page });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

@@ -1,5 +1,4 @@
 export * from './movie';
-export * from './actor';
-export * from './director';
-export * from './genre';
+export type { ActorProfile, ActorFilters } from './actor';
+export type { DirectorProfile } from './director';
 export * from './api';

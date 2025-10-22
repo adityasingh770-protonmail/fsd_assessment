@@ -39,8 +39,8 @@ export const Favorites = () => {
         const moviePromises = favorites.map((id) => movieService.getMovieById(id));
         const movies = await Promise.all(moviePromises);
         setFavoriteMovies(movies);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load favorite movies');
+      } catch (err) {
+        setError((err as Error).message || 'Failed to load favorite movies');
       } finally {
         setLoading(false);
       }

@@ -29,7 +29,7 @@ class ApiClient {
       (response) => {
         return response;
       },
-      (error: AxiosError) => {
+      (error: AxiosError<{ message?: string }>) => {
         const apiError: ApiError = {
           message: error.response?.data?.message || error.message || 'An error occurred',
           status: error.response?.status,
