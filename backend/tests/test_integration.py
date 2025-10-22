@@ -11,9 +11,12 @@ class TestMovieWorkflow:
     def test_create_complete_movie_workflow(self, client):
         """Test creating a movie with all relationships."""
         
+        import time
+        unique_id = str(int(time.time() * 1000))  # Unique timestamp
+        
         # Step 1: Create a director
         director_data = {
-            "name": "Workflow Director",
+            "name": f"Workflow Director {unique_id}",
             "bio": "Test director for workflow",
             "nationality": "American"
         }
@@ -27,7 +30,7 @@ class TestMovieWorkflow:
         
         # Step 2: Create actors
         actor1_data = {
-            "name": "Workflow Actor 1",
+            "name": f"Workflow Actor 1 {unique_id}",
             "bio": "First test actor"
         }
         actor1_response = client.post(
@@ -39,7 +42,7 @@ class TestMovieWorkflow:
         actor1_id = json.loads(actor1_response.data)['data']['id']
         
         actor2_data = {
-            "name": "Workflow Actor 2",
+            "name": f"Workflow Actor 2 {unique_id}",
             "bio": "Second test actor"
         }
         actor2_response = client.post(
@@ -50,9 +53,9 @@ class TestMovieWorkflow:
         assert actor2_response.status_code == 201
         actor2_id = json.loads(actor2_response.data)['data']['id']
         
-        # Step 3: Create genres
+        # Step 3: Create genres with unique names
         genre1_data = {
-            "name": "WorkflowGenre1",
+            "name": f"WorkflowGenre{unique_id}",
             "description": "First workflow genre"
         }
         genre1_response = client.post(
