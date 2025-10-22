@@ -37,8 +37,10 @@ export const DirectorProfile = () => {
       setError(null);
 
       try {
-        const data = await directorService.getDirectorById(parseInt(id));
-        setDirector(data);
+        const response = await directorService.getDirectorById(parseInt(id));
+        // API returns { success, data } structure, extract the director data
+        const directorData = (response as any).data || response;
+        setDirector(directorData);
       } catch (err) {
         setError((err as Error).message || 'Failed to load director profile');
       } finally {

@@ -44,8 +44,10 @@ export const MovieDetail = () => {
       setError(null);
 
       try {
-        const data = await movieService.getMovieById(parseInt(id));
-        setMovie(data);
+        const response = await movieService.getMovieById(parseInt(id));
+        // API returns { success, data } structure, extract the movie data
+        const movieData = (response as any).data || response;
+        setMovie(movieData);
       } catch (err) {
         setError((err as Error).message || 'Failed to load movie details');
       } finally {

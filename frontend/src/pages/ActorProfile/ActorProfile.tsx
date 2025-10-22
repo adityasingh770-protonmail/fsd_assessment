@@ -37,8 +37,10 @@ export const ActorProfile = () => {
       setError(null);
 
       try {
-        const data = await actorService.getActorById(parseInt(id));
-        setActor(data);
+        const response = await actorService.getActorById(parseInt(id));
+        // API returns { success, data } structure, extract the actor data
+        const actorData = (response as any).data || response;
+        setActor(actorData);
       } catch (err) {
         setError((err as Error).message || 'Failed to load actor profile');
       } finally {
