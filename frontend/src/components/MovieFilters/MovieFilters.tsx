@@ -37,14 +37,16 @@ export const MovieFilters = ({ filters, onFiltersChange }: MovieFiltersProps) =>
   useEffect(() => {
     const loadFilterOptions = async () => {
       try {
-        const [genresData, directorsData, actorsData] = await Promise.all([
+        const [genresResponse, directorsResponse, actorsResponse] = await Promise.all([
           genreService.getGenres(),
           directorService.getDirectors(),
           actorService.getActors(),
         ]);
-        setGenres(genresData);
-        setDirectors(directorsData);
-        setActors(actorsData);
+
+        // API returns { success, data, meta } structure, extract the data array
+        setGenres(Array.isArray(genresResponse) ? genresResponse : (genresResponse as any).data || []);
+        setDirectors(Array.isArray(directorsResponse) ? directorsResponse : (directorsResponse as any).data || []);
+        setActors(Array.isArray(actorsResponse) ? actorsResponse : (actorsResponse as any).data || []);
       } catch (error) {
         console.error('Error loading filter options:', error);
       }

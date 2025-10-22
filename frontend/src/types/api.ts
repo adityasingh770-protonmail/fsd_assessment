@@ -8,7 +8,8 @@ export interface PaginationMeta {
 }
 
 export interface PaginatedResponse<T> {
-  items: T[];
+  success: boolean;
+  data: T[];
   meta: PaginationMeta;
 }
 

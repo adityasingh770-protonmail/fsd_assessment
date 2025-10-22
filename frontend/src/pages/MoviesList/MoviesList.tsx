@@ -36,8 +36,8 @@ export const MoviesList = () => {
 
       try {
         const response = await movieService.getMovies(filters);
-        setMovies(response.items);
-        setTotalPages(response.meta.total_pages);
+        setMovies(response.data || []);
+        setTotalPages(response.meta?.total_pages || 1);
       } catch (err) {
         setError((err as Error).message || 'Failed to load movies');
       } finally {
