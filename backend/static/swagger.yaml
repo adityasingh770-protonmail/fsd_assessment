@@ -1,0 +1,949 @@
+openapi: 3.0.3
+info:
+  title: Movie Explorer Platform API
+  description: |
+    RESTful API for exploring movies, actors, directors, and genres.
+    
+    ## Features
+    - Complete CRUD operations for all resources
+    - Advanced filtering for movies
+    - Pagination support
+    - Request validation
+    - Standardized response format
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@movieexplorer.com
+
+servers:
+  - url: http://localhost:5001/api/v1
+    description: Development server
+
+tags:
+  - name: Movies
+    description: Movie management endpoints
+  - name: Actors
+    description: Actor management endpoints
+  - name: Directors
+    description: Director management endpoints
+  - name: Genres
+    description: Genre management endpoints
+  - name: Health
+    description: Health check endpoints
+
+paths:
+  /movies:
+    get:
+      tags:
+        - Movies
+      summary: Get all movies
+      description: Retrieve a paginated list of movies with optional filtering
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: page_size
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: genre
+          in: query
+          description: Filter by genre name
+          schema:
+            type: string
+        - name: director
+          in: query
+          description: Filter by director name
+          schema:
+            type: string
+        - name: actor
+          in: query
+          description: Filter by actor name
+          schema:
+            type: string
+        - name: year
+          in: query
+          description: Filter by release year
+          schema:
+            type: integer
+        - name: min_rating
+          in: query
+          description: Minimum rating filter
+          schema:
+            type: number
+            format: float
+            minimum: 0
+            maximum: 10
+        - name: max_rating
+          in: query
+          description: Maximum rating filter
+          schema:
+            type: number
+            format: float
+            minimum: 0
+            maximum: 10
+        - name: search
+          in: query
+          description: Search in title and description
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MovieSummary'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      tags:
+        - Movies
+      summary: Create a new movie
+      description: Create a new movie with actors, director, and genres
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieCreate'
+      responses:
+        '201':
+          description: Movie created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/MovieDetail'
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /movies/{id}:
+    get:
+      tags:
+        - Movies
+      summary: Get movie by ID
+      description: Retrieve detailed information about a specific movie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Movie ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/MovieDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Movies
+      summary: Update a movie
+      description: Update movie information
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Movie ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieUpdate'
+      responses:
+        '200':
+          description: Movie updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/MovieDetail'
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+    delete:
+      tags:
+        - Movies
+      summary: Delete a movie
+      description: Delete a movie from the database
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Movie ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Movie deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /actors:
+    get:
+      tags:
+        - Actors
+      summary: Get all actors
+      description: Retrieve a paginated list of actors
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: include_movies
+          in: query
+          description: Include actor's filmography
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Actor'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      tags:
+        - Actors
+      summary: Create a new actor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActorCreate'
+      responses:
+        '201':
+          description: Actor created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Actor'
+                  message:
+                    type: string
+
+  /actors/{id}:
+    get:
+      tags:
+        - Actors
+      summary: Get actor by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: include_movies
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/ActorWithMovies'
+
+    put:
+      tags:
+        - Actors
+      summary: Update an actor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActorUpdate'
+      responses:
+        '200':
+          description: Actor updated successfully
+
+    delete:
+      tags:
+        - Actors
+      summary: Delete an actor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Actor deleted successfully
+
+  /directors:
+    get:
+      tags:
+        - Directors
+      summary: Get all directors
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: include_movies
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Director'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+
+    post:
+      tags:
+        - Directors
+      summary: Create a new director
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectorCreate'
+      responses:
+        '201':
+          description: Director created successfully
+
+  /directors/{id}:
+    get:
+      tags:
+        - Directors
+      summary: Get director by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: include_movies
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successful response
+
+    put:
+      tags:
+        - Directors
+      summary: Update a director
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectorUpdate'
+      responses:
+        '200':
+          description: Director updated successfully
+
+    delete:
+      tags:
+        - Directors
+      summary: Delete a director
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Director deleted successfully
+
+  /genres:
+    get:
+      tags:
+        - Genres
+      summary: Get all genres
+      parameters:
+        - name: include_movies
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Genre'
+
+    post:
+      tags:
+        - Genres
+      summary: Create a new genre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenreCreate'
+      responses:
+        '201':
+          description: Genre created successfully
+
+  /genres/{id}:
+    get:
+      tags:
+        - Genres
+      summary: Get genre by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: include_movies
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successful response
+
+    put:
+      tags:
+        - Genres
+      summary: Update a genre
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenreUpdate'
+      responses:
+        '200':
+          description: Genre updated successfully
+
+    delete:
+      tags:
+        - Genres
+      summary: Delete a genre
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Genre deleted successfully
+
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+
+    PageSize:
+      name: page_size
+      in: query
+      description: Items per page
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 100
+
+  schemas:
+    MovieSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        release_year:
+          type: integer
+        rating:
+          type: number
+          format: float
+        poster_url:
+          type: string
+          nullable: true
+        director:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        genres:
+          type: array
+          items:
+            type: string
+
+    MovieDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        release_year:
+          type: integer
+        duration_minutes:
+          type: integer
+          nullable: true
+        rating:
+          type: number
+          format: float
+        poster_url:
+          type: string
+          nullable: true
+        director:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        actors:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        genres:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+
+    MovieCreate:
+      type: object
+      required:
+        - title
+        - release_year
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        release_year:
+          type: integer
+          minimum: 1888
+          maximum: 2100
+        duration_minutes:
+          type: integer
+          minimum: 1
+          nullable: true
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 10
+          default: 0
+        poster_url:
+          type: string
+          maxLength: 500
+          nullable: true
+        director_id:
+          type: integer
+          nullable: true
+        actor_ids:
+          type: array
+          items:
+            type: integer
+          default: []
+        genre_ids:
+          type: array
+          items:
+            type: integer
+          default: []
+
+    MovieUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        release_year:
+          type: integer
+        duration_minutes:
+          type: integer
+        rating:
+          type: number
+        poster_url:
+          type: string
+        director_id:
+          type: integer
+        actor_ids:
+          type: array
+          items:
+            type: integer
+        genre_ids:
+          type: array
+          items:
+            type: integer
+
+    Actor:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        bio:
+          type: string
+          nullable: true
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        nationality:
+          type: string
+          nullable: true
+
+    ActorWithMovies:
+      allOf:
+        - $ref: '#/components/schemas/Actor'
+        - type: object
+          properties:
+            movies:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  release_year:
+                    type: integer
+                  rating:
+                    type: number
+            movie_count:
+              type: integer
+            genres:
+              type: array
+              items:
+                type: string
+
+    ActorCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        bio:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        nationality:
+          type: string
+          maxLength: 100
+
+    ActorUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        bio:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        nationality:
+          type: string
+
+    Director:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        bio:
+          type: string
+          nullable: true
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        nationality:
+          type: string
+          nullable: true
+
+    DirectorCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        bio:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        nationality:
+          type: string
+          maxLength: 100
+
+    DirectorUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        bio:
+          type: string
+        birth_date:
+          type: string
+          format: date
+        nationality:
+          type: string
+
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+
+    GenreCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        description:
+          type: string
+          maxLength: 500
+
+    GenreUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_items:
+          type: integer
+        total_pages:
+          type: integer
+        has_next:
+          type: boolean
+        has_prev:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error:
+          type: string
+        status:
+          type: integer
+
+    ValidationError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error:
+          type: string
+        errors:
+          type: object
+        status:
+          type: integer
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
