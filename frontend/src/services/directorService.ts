@@ -12,8 +12,9 @@ export const directorService = {
   /**
    * Get a single director by ID
    */
-  async getDirectorById(id: number): Promise<DirectorProfile> {
-    return apiClient.get<DirectorProfile>(`/directors/${id}`);
+  async getDirectorById(id: number, includeMovies: boolean = true): Promise<DirectorProfile> {
+    const params = includeMovies ? '?include_movies=true' : '';
+    return apiClient.get<DirectorProfile>(`/directors/${id}${params}`);
   },
 
   /**

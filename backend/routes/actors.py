@@ -138,7 +138,9 @@ def get_actor(actor_id):
                     'id': movie.id,
                     'title': movie.title,
                     'release_year': movie.release_year,
-                    'rating': movie.rating
+                    'rating': movie.rating,
+                    'poster_url': movie.poster_url,
+                    'genres': [genre.name for genre in movie.genres]
                 }
                 for movie in actor.movies
             ]

@@ -53,7 +53,7 @@ export const MovieCard = ({ movie, isFavorite, onToggleFavorite }: MovieCardProp
         image={movie.poster_url || 'https://via.placeholder.com/300x450?text=No+Poster'}
         alt={movie.title}
         sx={{
-          objectFit: 'cover',
+          objectFit: 'contain',
           cursor: 'pointer',
         }}
         onClick={handleViewDetails}
@@ -76,34 +76,42 @@ export const MovieCard = ({ movie, isFavorite, onToggleFavorite }: MovieCardProp
         </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <Rating value={movie.rating / 2} precision={0.1} readOnly size="small" />
+          <Rating value={(movie.rating || 0) / 2} precision={0.1} readOnly size="small" />
           <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-            {movie.rating.toFixed(1)}/10
+            {movie.rating ? movie.rating.toFixed(1) : 'N/A'}/10
           </Typography>
         </Box>
 
-        <Typography variant="body2" color="text.secondary" paragraph>
-          {truncateText(movie.description, 100)}
-        </Typography>
+        {movie.description && (
+          <Typography variant="body2" color="text.secondary" paragraph>
+            {truncateText(movie.description, 100)}
+          </Typography>
+        )}
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
           {movie.genres && movie.genres.length > 0 ? (
-            movie.genres.slice(0, 3).map((genre) => (
-              <Chip
-                key={genre.id}
-                label={genre.name}
-                size="small"
-                variant="outlined"
-                color="primary"
-              />
-            ))
+            movie.genres.slice(0, 3).map((genre, index) => {
+              // Handle both string[] (list view) and Genre[] (detail view) formats
+              const genreLabel = typeof genre === 'string' ? genre : genre.name;
+              const genreKey = typeof genre === 'string' ? `${genre}-${index}` : genre.id;
+              return (
+                <Chip
+                  key={genreKey}
+                  label={genreLabel}
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                />
+              );
+            })
           ) : (
             <Chip label="No genres" size="small" variant="outlined" />
           )}
         </Box>
 
         <Typography variant="caption" color="text.secondary" display="block">
-          {movie.release_year} • {formatDuration(movie.duration_minutes)}
+          {movie.release_year}
+          {movie.duration_minutes && ` • ${formatDuration(movie.duration_minutes)}`}
         </Typography>
 
         {movie.director && (

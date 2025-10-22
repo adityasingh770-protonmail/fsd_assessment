@@ -21,8 +21,9 @@ export const actorService = {
   /**
    * Get a single actor by ID
    */
-  async getActorById(id: number): Promise<ActorProfile> {
-    return apiClient.get<ActorProfile>(`/actors/${id}`);
+  async getActorById(id: number, includeMovies: boolean = true): Promise<ActorProfile> {
+    const params = includeMovies ? '?include_movies=true' : '';
+    return apiClient.get<ActorProfile>(`/actors/${id}${params}`);
   },
 
   /**
