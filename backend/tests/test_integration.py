@@ -158,5 +158,4 @@ class TestErrorHandling:
             '/api/v1/movies',
             data=json.dumps({"title": "Test"})
         )
-        # Should still work or return appropriate error
-        assert response.status_code in [201, 400, 422]
+        assert response.status_code >= 400

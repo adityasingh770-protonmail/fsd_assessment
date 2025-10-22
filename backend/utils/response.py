@@ -162,26 +162,45 @@ def not_found_response(message: str = "Resource not found") -> tuple:
     return error_response(message=message, status_code=404)
 
 
-def validation_error_response(errors: Dict) -> tuple:
+def validation_error_response(errors) -> tuple:
     """
     Create a 422 Unprocessable Entity response for validation errors.
     
     Args:
-        errors: Dictionary of validation errors
+        errors: Pydantic validation errors (list) or dictionary of errors
         
     Returns:
         tuple: (JSON response, status code)
-        
-    Example:
-        return validation_error_response({
-            "title": "Title must be at least 1 character",
-            "release_year": "Release year must be between 1888 and 2100"
-        })
     """
+    # Convert Pydantic errors to serializable format
+    if isinstance(errors, list):
+        formatted_errors = {}
+        for error in errors:
+            try:
+                # Get field name from location tuple
+                loc = error.get('loc', ('unknown',))
+                field = str(loc[-1]) if loc else 'unknown'
+                
+                # Get error message and convert any non-serializable objects
+                msg = error.get('msg', 'Validation error')
+                if hasattr(msg, '__str__'):
+                    msg = str(msg)
+                
+                # Get error type for context
+                error_type = error.get('type', 'validation_error')
+                
+                # Combine message and type for clarity
+                formatted_errors[field] = f"{msg}"
+            except Exception:
+                # Fallback for any errors during formatting
+                formatted_errors['unknown'] = 'Validation error occurred'
+    else:
+        formatted_errors = errors
+    
     return error_response(
         message="Validation failed",
         status_code=422,
-        errors=errors
+        errors=formatted_errors
     )
 
 
