@@ -1,0 +1,1 @@
+export { DirectorProfile } from './DirectorProfile';
