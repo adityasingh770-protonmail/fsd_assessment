@@ -85,16 +85,16 @@ def reset_db():
 
 
 # Event listener for SQLite foreign key support (if using SQLite for testing)
-@event.listens_for(engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
-    """
-    Enable foreign key support for SQLite connections.
-    This is automatically called for each new connection.
-    """
-    if 'sqlite' in config.SQLALCHEMY_DATABASE_URI:
-        cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA foreign_keys=ON")
-        cursor.close()
+# @event.listens_for(engine, "connect")
+# def set_sqlite_pragma(dbapi_connection, connection_record):
+#     """
+#     Enable foreign key support for SQLite connections.
+#     This is automatically called for each new connection.
+#     """
+#     if 'sqlite' in config.SQLALCHEMY_DATABASE_URI:
+#         cursor = dbapi_connection.cursor()
+#         cursor.execute("PRAGMA foreign_keys=ON")
+#         cursor.close()
 
 
 # Context manager for database sessions
